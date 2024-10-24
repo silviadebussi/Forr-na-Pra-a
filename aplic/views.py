@@ -1,13 +1,23 @@
-# meu_app/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Usuario  # Certifique-se de que seu modelo de usuário está definido
-from .forms import UsuarioForm  # Se você tiver um formulário para o usuário
+from .models import Usuario
+from .forms import UsuarioForm
+from django.views.generic import TemplateView
 
+class atualizarView(TemplateView):
+    template_name = 'usuarios/atualizar_usuario.html'
+
+class usuariosView(TemplateView):
+    template_name = 'usuarios/criar_usuario.html'
+
+class deletarView(TemplateView):
+    template_name = 'usuarios/deletar_usuario.html'
+
+class listarView(TemplateView):
+    template_name = 'usuarios/listar_usuarios.html'
 
 def listar_usuarios(request):
     usuarios = Usuario.objects.all()
-    return render(request, 'listar_usuarios.html', {'usuarios': usuarios})
-
+    return render(request, 'usuarios/listar_usuarios.html', {'usuarios': usuarios})
 
 def criar_usuario(request):
     if request.method == 'POST':
@@ -17,8 +27,7 @@ def criar_usuario(request):
             return redirect('listar_usuarios')
     else:
         form = UsuarioForm()
-    return render(request, 'criar_usuario.html', {'form': form})
-
+    return render(request, 'usuarios/criar_usuario.html', {'form': form})
 
 def atualizar_usuario(request, id):
     usuario = get_object_or_404(Usuario, id=id)
@@ -29,12 +38,11 @@ def atualizar_usuario(request, id):
             return redirect('listar_usuarios')
     else:
         form = UsuarioForm(instance=usuario)
-    return render(request, 'atualizar_usuario.html.html', {'form': form})
-
+    return render(request, 'usuarios/atualizar_usuario.html', {'form': form})
 
 def deletar_usuario(request, id):
     usuario = get_object_or_404(Usuario, id=id)
     if request.method == 'POST':
         usuario.delete()
         return redirect('listar_usuarios')
-    return render(request, 'deletar_usuario.html', {'usuario': usuario})
+    return render(request, 'usuarios/deletar_usuario.html', {'usuario': usuario})
