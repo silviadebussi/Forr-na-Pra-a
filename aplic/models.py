@@ -3,8 +3,8 @@ from django.utils import timezone
 
 class Usuario(models.Model):
     nome = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    status = models.BooleanField(default=True)  # True significa ativo, False significa bloqueado
+    email = models.EmailField()
+    # Adicione outros campos conforme necessário
 
     def __str__(self):
         return self.nome
